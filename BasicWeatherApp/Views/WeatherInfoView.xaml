@@ -14,7 +14,7 @@
             </Style>
             <Style TargetType="Label" x:Key="labelTemperature">
                 <Setter Property="FontSize" Value="70"></Setter>
-                <Setter Property="Margin" Value="0 20"></Setter>
+                <Setter Property="Margin" Value="20,0"></Setter>
             </Style>
             <Style TargetType="Grid">
                 <Setter Property="Margin" Value="10"></Setter>
@@ -120,13 +120,7 @@
                   Grid.Row="6"
                   Grid.ColumnSpan="2"
                  >
-                    <ListView.ItemSource>
-                        <x:Array Type="x:Type x:String">
-                            <x:String>Item 1</x:String>
-                            <x:String>Item 1</x:String>
-                            <x:String>Item 1</x:String>
-                        </x:Array>
-                    </ListView.ItemSource>
+                   
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
