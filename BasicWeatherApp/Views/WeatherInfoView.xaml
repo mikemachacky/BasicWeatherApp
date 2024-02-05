@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BasicWeatherApp.Views.WeatherInfoView"
+             Title="Weather Info"
+             Background="#1f1f1f"
+             Shell.BackgroundColor="#1f1f1f">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="BoxView">
+                <Setter Property="CornerRadius" Value="20"></Setter>
+                <Setter Property="Color" Value="#3dFFFFFF"></Setter>
+                
+            </Style>
+            <Style TargetType="Label" x:Key="labelTemperature">
+                <Setter Property="FontSize" Value="70"></Setter>
+                <Setter Property="Margin" Value="0 20"></Setter>
+            </Style>
+            <Style TargetType="Grid">
+                <Setter Property="Margin" Value="10"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid RowSpacing="10" ColumnSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="200" />
+
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <BoxView />
+                <Label x:Name="Temperature" Text="8°"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center" 
+                    Style="{StaticResource labelTemperature}" />    
+                <BoxView Grid.Column="1"
+                  Grid.RowSpan="2"
+              />
+                <Image  Grid.RowSpan="2" Grid.Column="1" 
+                    Source="dotnet_bot.png"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" /> 
+                <BoxView Grid.Row="1"
+                 />
+                <Grid Grid.Row="1" RowSpacing="0" Margin="18"
+            >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label  Grid.RowSpan="2" Text="Mostly Cloudy" FontSize="Medium"></Label>
+
+                    <Label Grid.Row="2" Text="Tułowice" FontSize="Header"></Label>
+                    <Label Grid.Row="3" Text="9°/6° Feels like 4°" FontSize="Caption"></Label>
+                    <Label Grid.Row="4" Text="Sun, 10:13" FontSize="Caption"></Label>
+                </Grid>
+                <BoxView
+             Grid.Row="2"
+             Grid.ColumnSpan="2"
+             />
+                <Grid Grid.Row="2"
+              Grid.ColumnSpan="2" Margin="18" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Text="Rain developing during the afternoon. Highs 8 to 10°C and lows 5  to 7°C." FontAttributes="Bold" />
+                    <BoxView Color="SlateGray" Grid.Row="1" ></BoxView>
+                </Grid>
+                <BoxView
+                  Grid.Row="3"
+                  Grid.ColumnSpan="2"
+                  />
+                <Grid Grid.Row="3"
+                            Grid.ColumnSpan="2">
+                <CarouselView IndicatorView="IndicatorView">
+                    <CarouselView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Item 1</x:String>
+                            <x:String>Item 2</x:String>
+                            <x:String>Item 3</x:String>
+                        </x:Array>
+                    </CarouselView.ItemsSource>
+                    <CarouselView.ItemTemplate>
+                    
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding .}" FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                
+                            </Grid>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+                <IndicatorView x:Name="IndicatorView" HorizontalOptions="Center" VerticalOptions="End">
+
+                </IndicatorView>
+                </Grid>
+                <ListView
+                  Grid.Row="6"
+                  Grid.ColumnSpan="2"
+                 >
+                    <ListView.ItemSource>
+                        <x:Array Type="x:Type x:String">
+                            <x:String>Item 1</x:String>
+                            <x:String>Item 1</x:String>
+                            <x:String>Item 1</x:String>
+                        </x:Array>
+                    </ListView.ItemSource>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="Day"></Label>
+                                <Label Text="Humidity" Grid.Column="1"></Label>
+                            </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                </ListView>
+
+
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+   
+</ContentPage>
