@@ -36,20 +36,16 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <BoxView />
+               
                 <Label x:Name="Temperature" Text="8°"
                     HorizontalOptions="Start"
                     VerticalOptions="Center" 
-                    Style="{StaticResource labelTemperature}" />    
-                <BoxView Grid.Column="1"
-                  Grid.RowSpan="2"
-              />
-                <Image  Grid.RowSpan="2" Grid.Column="1" 
-                    Source="dotnet_bot.png"
+                    Style="{StaticResource labelTemperature}" />
+
+                <Image Grid.RowSpan="2" Grid.Column="1"
                     HorizontalOptions="Center"
                     VerticalOptions="Center" /> 
-                <BoxView Grid.Row="1"
-                 />
+                
                 <Grid Grid.Row="1" RowSpacing="0" Margin="18"
             >
                     <Grid.RowDefinitions>
@@ -70,6 +66,7 @@
                     <Label Grid.Row="3" Text="9°/6° Feels like 4°" FontSize="Caption"></Label>
                     <Label Grid.Row="4" Text="Sun, 10:13" FontSize="Caption"></Label>
                 </Grid>
+                
                 <BoxView
              Grid.Row="2"
              Grid.ColumnSpan="2"
@@ -116,6 +113,8 @@
 
                 </IndicatorView>
                 </Grid>
+                <BoxView Grid.Row="6"
+Grid.ColumnSpan="2"></BoxView>
                 <ListView
                   Grid.Row="6"
                   Grid.ColumnSpan="2"
