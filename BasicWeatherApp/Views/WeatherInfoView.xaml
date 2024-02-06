@@ -42,7 +42,7 @@
                     VerticalOptions="Center" 
                     Style="{StaticResource labelTemperature}" />
 
-                <Image Grid.RowSpan="2" Grid.Column="1"
+                <Image Source="d113.png" Grid.RowSpan="2" Grid.Column="1"
                     HorizontalOptions="Center"
                     VerticalOptions="Center" /> 
                 
