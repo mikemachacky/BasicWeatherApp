@@ -12,7 +12,8 @@ public partial class WeatherInfoView : ContentPage
             Application.Current.MainPage.DisplayAlert("Error", $"No internet connection", "OK");
           
         }
-        var _weatherInfoViewModels = new WeatherInfoViewModel();
-       
+        //var _weatherInfoViewModels = new WeatherInfoViewModel();
+        BindingContext = new WeatherInfoViewModel();
+
     }
 }

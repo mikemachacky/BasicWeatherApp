@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BasicWeatherApp.Views.WeatherInfoView"
              xmlns:viewmodel="clr-namespace:BasicWeatherApp.ViewModels"
              x:DataType="viewmodel:WeatherInfoViewModel"
-             x:Class="BasicWeatherApp.Views.WeatherInfoView"
              Title="Weather Info"
              Background="#1f1f1f"
              Shell.BackgroundColor="#1f1f1f">
@@ -65,7 +65,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label  Grid.RowSpan="2" Text="{Binding Text}" FontSize="Medium"></Label>
+                    <Label  Grid.RowSpan="2" Text="{Binding Icon}" FontSize="Medium"></Label>
 
                     <Label Grid.Row="2" Text="{Binding Location}" FontSize="Header"></Label>
                     <Label Grid.Row="3" Text="{Binding FeelsLikeC}" FontSize="Caption"></Label>
@@ -82,7 +82,7 @@
                         <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Label Text="Rain developing during the afternoon. Highs 8 to 10°C and lows 5  to 7°C." FontAttributes="Bold" />
+                        <Label Text="{Binding Text}" FontAttributes="Bold" />
                     <BoxView Color="SlateGray" Grid.Row="1" ></BoxView>
                 </Grid>
                 <BoxView

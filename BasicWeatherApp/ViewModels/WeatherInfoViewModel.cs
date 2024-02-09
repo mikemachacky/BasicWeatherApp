@@ -3,37 +3,65 @@ using BasicWeatherApp.ApiModels;
 using BasicWeatherApp.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace BasicWeatherApp.ViewModels;
 
 internal partial class WeatherInfoViewModel : ObservableObject
 {
+
     private readonly WeatherApiService _weatherApiService;
     public WeatherInfoViewModel()
     {
         _weatherApiService = new WeatherApiService();
-        //App.Current.MainPage.DisplayAlert("Constructor", "Works", "Cancel");
-        FetchWeatherInfo();
+        Initialize();
     }
-    bool isRefreshing;
 
-    public bool IsRefreshing
+    private async void Initialize()
     {
-        get { return isRefreshing; }
-        set
+        try
         {
-            isRefreshing = value;
-            OnPropertyChanged();
+            await FetchWeatherInfo();
+            // Now, you can show an alert or perform other actions after data is fetched
+            //await Application.Current.MainPage.DisplayAlert("Constructor", "Works", "Cancel");
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions if any
         }
     }
-    public ICommand RefreshCommand => new Command(async () => await FetchWeatherInfo());
+
+    [ObservableProperty]
+    private bool isRefreshing;
+
+
+    [RelayCommand]
+    public async Task Refresh()
+    {
+        if (!IsRefreshing)
+        {
+            IsRefreshing = true;
+            try
+            {
+                await FetchWeatherInfo();
+                await App.Current.MainPage.DisplayAlert("Refresh", "Works", "OK");
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Refresh", "Doesn't work", "OK");
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
+        }
+    }
+
     [ObservableProperty]
     private string lastUpdated;
     [ObservableProperty]
     private string tempC;
-    [ObservableProperty]
-    private string tempF;
     [ObservableProperty]
     private string isDay;
     [ObservableProperty]
@@ -42,8 +70,6 @@ internal partial class WeatherInfoViewModel : ObservableObject
     private string icon;
     [ObservableProperty]
     private string code;
-    [ObservableProperty]
-    private string windMPH;
     [ObservableProperty]
     private string windKPH;
     [ObservableProperty]
@@ -57,24 +83,44 @@ internal partial class WeatherInfoViewModel : ObservableObject
     [ObservableProperty]
     private string feelsLikeC;
     [ObservableProperty]
-    private string feelsLikeF;
-    [ObservableProperty]
     private string uV;
     [ObservableProperty]
     private string location;
 
-  
 
- 
-    private async Task<WeatherApiResponse> FetchWeatherInfo()
+    [RelayCommand]
+    public async Task FetchWeatherInfo()
     {
-        var response = await _weatherApiService.GetWeatherInfo("Opole");
-      
-        await Application.Current.MainPage.DisplayAlert("Success", "Service works!", "OK");
+        IsRefreshing = true; // Set to true before fetching data
 
-        return response;
-           
-        
-    }
-  
+        try
+        {
+            var response = await _weatherApiService.GetWeatherInfo("Opole");
+            LastUpdated = response.Current.last_updated;
+            TempC = $"{response.Current.temp_c}°" ;
+            IsDay = $"{response.Current.is_day}";
+            Text = $"{response.Current.condition.text}";
+            Icon = $"{response.Current.condition.icon}";
+            Code = $"{response.Current.condition.code}";
+            WindDir = $"{response.Current.wind_dir}";
+            FeelsLikeC = $"Feels like {response.Current.feelslike_c}°";
+            Location = $"{response.Location.name}, {response.Location.localtime}";
+            Humidity = $"{response.Current.humidity}";
+            Cloud = $"{response.Current.cloud}";
+            UV = $"{response.Current.uv}";
+
+            // Update other properties similarly
+            //await Application.Current.MainPage.DisplayAlert("Success", "Service works!", "OK");
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions
+            await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+        }
+        finally
+        {
+            IsRefreshing = false; // Set to false after data is fetched
+        }
+    } 
+
 }
