@@ -96,7 +96,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
 
         try
         {
-            var response = await _weatherApiService.GetWeatherInfo("Opole");
+            var response = await _weatherApiService.GetWeatherInfo("Tu³owice");
             LastUpdated = response.Current.last_updated;
             TempC = $"{response.Current.temp_c}°" ;
             IsDay = $"{response.Current.is_day}";
