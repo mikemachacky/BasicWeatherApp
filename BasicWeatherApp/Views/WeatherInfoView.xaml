@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:BasicWeatherApp.ViewModels"
+             x:DataType="viewmodel:WeatherInfoViewModel"
              x:Class="BasicWeatherApp.Views.WeatherInfoView"
              Title="Weather Info"
              Background="#1f1f1f"
@@ -21,7 +23,10 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ScrollView>
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}"
+                 >
+        <ScrollView>
         <VerticalStackLayout>
             <Grid RowSpacing="10" ColumnSpacing="10">
                 <Grid.RowDefinitions>
@@ -37,12 +42,12 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                
-                <Label x:Name="Temperature" Text="8°"
+                <Label x:Name="Temperature" Text="{Binding TempC}"
                     HorizontalOptions="Start"
                     VerticalOptions="Center" 
                     Style="{StaticResource labelTemperature}" />
 
-                <Image Source="dotnet_bot.svg" Grid.RowSpan="2" Grid.Column="1"
+                <Image Source="{Binding Icon}" Grid.RowSpan="2" Grid.Column="1"
                     HorizontalOptions="Center"
                     VerticalOptions="Center" /> 
                 
@@ -60,11 +65,11 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label  Grid.RowSpan="2" Text="Mostly Cloudy" FontSize="Medium"></Label>
+                    <Label  Grid.RowSpan="2" Text="{Binding Text}" FontSize="Medium"></Label>
 
-                    <Label Grid.Row="2" Text="Tułowice" FontSize="Header"></Label>
-                    <Label Grid.Row="3" Text="9°/6° Feels like 4°" FontSize="Caption"></Label>
-                    <Label Grid.Row="4" Text="Sun, 10:13" FontSize="Caption"></Label>
+                    <Label Grid.Row="2" Text="{Binding Location}" FontSize="Header"></Label>
+                    <Label Grid.Row="3" Text="{Binding FeelsLikeC}" FontSize="Caption"></Label>
+                    <Label Grid.Row="4" Text="{Binding LastUpdated}" FontSize="Caption"></Label>
                 </Grid>
                 
                 <BoxView
@@ -86,7 +91,7 @@
                   />
                 <Grid Grid.Row="3"
                             Grid.ColumnSpan="2">
-                <CarouselView IndicatorView="IndicatorView">
+                <CarouselView IndicatorView="CarouselIndicatorView">
                     <CarouselView.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>Item 1</x:String>
@@ -109,7 +114,7 @@
                         </DataTemplate>
                     </CarouselView.ItemTemplate>
                 </CarouselView>
-                <IndicatorView x:Name="IndicatorView" HorizontalOptions="Center" VerticalOptions="End">
+                <IndicatorView x:Name="CarouselIndicatorView" HorizontalOptions="Center" VerticalOptions="End">
 
                 </IndicatorView>
                 </Grid>
@@ -145,5 +150,5 @@ Grid.ColumnSpan="2"></BoxView>
             </Grid>
         </VerticalStackLayout>
     </ScrollView>
-   
+    </RefreshView>
 </ContentPage>
