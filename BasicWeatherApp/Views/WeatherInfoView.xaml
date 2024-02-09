@@ -47,11 +47,12 @@
                     VerticalOptions="Center" 
                     Style="{StaticResource labelTemperature}" />
 
-                <Image Source="{Binding Icon}" Grid.RowSpan="2" Grid.Column="1"
+                    <Image Source="{Binding Icon}" Grid.RowSpan="2" Grid.Column="1"
                     HorizontalOptions="Center"
-                    VerticalOptions="Center" /> 
-                
-                <Grid Grid.Row="1" RowSpacing="0" Margin="18"
+                    VerticalOptions="Center" >
+                    </Image>
+
+                    <Grid Grid.Row="1" RowSpacing="0" Margin="18"
             >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
@@ -65,9 +66,9 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Label  Grid.RowSpan="2" Text="{Binding Icon}" FontSize="Medium"></Label>
+                        <Label  Grid.RowSpan="2" Text="{Binding Text}" FontSize="Medium"></Label>
 
-                    <Label Grid.Row="2" Text="{Binding Location}" FontSize="Header"></Label>
+                        <Label Grid.Row="2" Text="{Binding City}" FontSize="Header"></Label>
                     <Label Grid.Row="3" Text="{Binding FeelsLikeC}" FontSize="Caption"></Label>
                     <Label Grid.Row="4" Text="{Binding LastUpdated}" FontSize="Caption"></Label>
                 </Grid>
@@ -82,7 +83,7 @@
                         <RowDefinition Height="50"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                        <Label Text="{Binding Text}" FontAttributes="Bold" />
+                        <Label Text="" FontAttributes="Bold" />
                     <BoxView Color="SlateGray" Grid.Row="1" ></BoxView>
                 </Grid>
                 <BoxView

@@ -85,7 +85,8 @@ internal partial class WeatherInfoViewModel : ObservableObject
     [ObservableProperty]
     private string uV;
     [ObservableProperty]
-    private string location;
+    private string city;
+  
 
 
     [RelayCommand]
@@ -100,14 +101,15 @@ internal partial class WeatherInfoViewModel : ObservableObject
             TempC = $"{response.Current.temp_c}°" ;
             IsDay = $"{response.Current.is_day}";
             Text = $"{response.Current.condition.text}";
-            Icon = $"{response.Current.condition.icon}";
+            Icon = $"https:{response.Current.condition.icon}";
             Code = $"{response.Current.condition.code}";
             WindDir = $"{response.Current.wind_dir}";
             FeelsLikeC = $"Feels like {response.Current.feelslike_c}°";
-            Location = $"{response.Location.name}, {response.Location.localtime}";
+            City = $"{response.Location.name}";
             Humidity = $"{response.Current.humidity}";
             Cloud = $"{response.Current.cloud}";
             UV = $"{response.Current.uv}";
+           
 
             // Update other properties similarly
             //await Application.Current.MainPage.DisplayAlert("Success", "Service works!", "OK");
