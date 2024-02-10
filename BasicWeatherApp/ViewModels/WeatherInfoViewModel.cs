@@ -6,57 +6,13 @@ using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 using System.Windows.Input;
 
+
 namespace BasicWeatherApp.ViewModels;
 
 internal partial class WeatherInfoViewModel : ObservableObject
 {
 
     private readonly WeatherApiService _weatherApiService;
-    public WeatherInfoViewModel()
-    {
-        _weatherApiService = new WeatherApiService();
-        Initialize();
-    }
-
-    private async void Initialize()
-    {
-        try
-        {
-            await FetchWeatherInfo();
-            // Now, you can show an alert or perform other actions after data is fetched
-            //await Application.Current.MainPage.DisplayAlert("Constructor", "Works", "Cancel");
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions if any
-        }
-    }
-
-    [ObservableProperty]
-    private bool isRefreshing;
-
-
-    [RelayCommand]
-    public async Task Refresh()
-    {
-        if (!IsRefreshing)
-        {
-            IsRefreshing = true;
-            try
-            {
-                await FetchWeatherInfo();
-                await App.Current.MainPage.DisplayAlert("Refresh", "Works", "OK");
-            }
-            catch
-            {
-                await App.Current.MainPage.DisplayAlert("Refresh", "Doesn't work", "OK");
-            }
-            finally
-            {
-                IsRefreshing = false;
-            }
-        }
-    }
 
     [ObservableProperty]
     private string lastUpdated;
@@ -86,19 +42,84 @@ internal partial class WeatherInfoViewModel : ObservableObject
     private string uV;
     [ObservableProperty]
     private string city;
-  
+    [ObservableProperty]
+    private string location;
+
+    public WeatherInfoViewModel()
+    {
+        _weatherApiService = new WeatherApiService();
+        Initialize();
+    }
+
+    private async void Initialize()
+    {
+        try
+        {
+            await FetchWeatherInfo();
+            // Now, you can show an alert or perform other actions after data is fetched
+            //await Application.Current.MainPage.DisplayAlert("Constructor", "Works", "Cancel");
+        }
+        catch (Exception ex)
+        {
+            App.Current.MainPage.DisplayAlert("Error", $"{ex}","OK");
+        }
+    }
+
+    [ObservableProperty]
+    private bool isRefreshing;
+
+
+    [RelayCommand]
+    public async Task Refresh()
+    {
+        if (!IsRefreshing)
+        {
+            IsRefreshing = true;
+            try
+            {
+                await FetchWeatherInfo();
+                await App.Current.MainPage.DisplayAlert("Refresh", "Works", "OK");
+            }
+            catch
+            {
+                await App.Current.MainPage.DisplayAlert("Refresh", "Doesn't work", "OK");
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
+        }
+    }
+
+    [RelayCommand]
+    public async Task DisplayPopUp()
+    {
+        try {
+            Location = await Application.Current.MainPage.DisplayPromptAsync("Location", "Type new location here: ", "OK");
+            await FetchWeatherInfo();
+        }
+        catch(Exception ex) {
+            Application.Current.MainPage.DisplayAlert("Error", $"{ex}", "OK");
+            
+        }
+    }
 
 
     [RelayCommand]
     public async Task FetchWeatherInfo()
     {
-        IsRefreshing = true; // Set to true before fetching data
+        IsRefreshing = true; 
 
         try
         {
-            var response = await _weatherApiService.GetWeatherInfo("Tu³owice");
+            if(Location == null)
+            {
+                await DisplayPopUp();
+               
+            }
+            var response = await _weatherApiService.GetWeatherInfo(Location);
             LastUpdated = response.Current.last_updated;
-            TempC = $"{response.Current.temp_c}°" ;
+            TempC = $"{response.Current.temp_c}°";
             IsDay = $"{response.Current.is_day}";
             Text = $"{response.Current.condition.text}";
             Icon = $"https:{response.Current.condition.icon}";
@@ -109,19 +130,20 @@ internal partial class WeatherInfoViewModel : ObservableObject
             Humidity = $"{response.Current.humidity}";
             Cloud = $"{response.Current.cloud}";
             UV = $"{response.Current.uv}";
-           
 
-            // Update other properties similarly
+
+
+
             //await Application.Current.MainPage.DisplayAlert("Success", "Service works!", "OK");
         }
         catch (Exception ex)
         {
-            // Handle exceptions
+          
             await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
         }
         finally
         {
-            IsRefreshing = false; // Set to false after data is fetched
+            IsRefreshing = false; 
         }
     } 
 

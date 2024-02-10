@@ -50,6 +50,9 @@
                     <Image Source="{Binding Icon}" Grid.RowSpan="2" Grid.Column="1"
                     HorizontalOptions="Center"
                     VerticalOptions="Center" >
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DisplayPopUpCommand}" ></TapGestureRecognizer>
+                        </Image.GestureRecognizers>
                     </Image>
 
                     <Grid Grid.Row="1" RowSpacing="0" Margin="18"
