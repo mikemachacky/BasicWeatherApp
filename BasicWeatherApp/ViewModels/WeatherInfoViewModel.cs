@@ -63,7 +63,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            App.Current.MainPage.DisplayAlert("Error", $"{ex}","OK");
+            await App.Current.MainPage.DisplayAlert("Error", $"{ex}","OK");
         }
     }
 
@@ -101,7 +101,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
             await RefreshData();
         }
         catch(Exception ex) {
-            Application.Current.MainPage.DisplayAlert("Error", $"{ex}", "OK");
+           await Application.Current.MainPage.DisplayAlert("Error", $"{ex}", "OK");
             
         }
     }
