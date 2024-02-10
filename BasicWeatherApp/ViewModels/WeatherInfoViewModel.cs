@@ -45,6 +45,8 @@ internal partial class WeatherInfoViewModel : ObservableObject
     [ObservableProperty]
     private string location;
 
+    
+
     public WeatherInfoViewModel()
     {
         _weatherApiService = new WeatherApiService();
@@ -96,7 +98,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
     {
         try {
             Location = await Application.Current.MainPage.DisplayPromptAsync("Location", "Type new location here: ", "OK");
-            await FetchWeatherInfo();
+            await RefreshData();
         }
         catch(Exception ex) {
             Application.Current.MainPage.DisplayAlert("Error", $"{ex}", "OK");
@@ -108,32 +110,22 @@ internal partial class WeatherInfoViewModel : ObservableObject
     [RelayCommand]
     public async Task FetchWeatherInfo()
     {
-        IsRefreshing = true; 
+        IsRefreshing = true;
+        
 
         try
         {
-            if(Location == null)
+            if ( Location == null)
             {
                 await DisplayPopUp();
-               
+                await SecureStorage.Default.SetAsync("location", Location);
+
             }
-            var response = await _weatherApiService.GetWeatherInfo(Location);
-            LastUpdated = response.Current.last_updated;
-            TempC = $"{response.Current.temp_c}°";
-            IsDay = $"{response.Current.is_day}";
-            Text = $"{response.Current.condition.text}";
-            Icon = $"https:{response.Current.condition.icon}";
-            Code = $"{response.Current.condition.code}";
-            WindDir = $"{response.Current.wind_dir}";
-            FeelsLikeC = $"Feels like {response.Current.feelslike_c}°";
-            City = $"{response.Location.name}";
-            Humidity = $"{response.Current.humidity}";
-            Cloud = $"{response.Current.cloud}";
-            UV = $"{response.Current.uv}";
-
-
-
-
+            else
+            {
+                await RefreshData();
+            }
+           
             //await Application.Current.MainPage.DisplayAlert("Success", "Service works!", "OK");
         }
         catch (Exception ex)
@@ -146,5 +138,23 @@ internal partial class WeatherInfoViewModel : ObservableObject
             IsRefreshing = false; 
         }
     } 
+
+    private async Task RefreshData()
+    {
+        var response = await _weatherApiService.GetWeatherInfo(Location);
+        LastUpdated = response.Current.last_updated;
+        TempC = $"{response.Current.temp_c}°";
+        IsDay = $"{response.Current.is_day}";
+        Text = $"{response.Current.condition.text}";
+        Icon = $"https:{response.Current.condition.icon}";
+        Code = $"{response.Current.condition.code}";
+        WindDir = $"{response.Current.wind_dir}";
+        FeelsLikeC = $"Feels like {response.Current.feelslike_c}°";
+        City = $"{response.Location.name}";
+        Humidity = $"{response.Current.humidity}";
+        Cloud = $"{response.Current.cloud}";
+        UV = $"{response.Current.uv}";
+    }
+
 
 }
