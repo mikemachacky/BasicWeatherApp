@@ -3,7 +3,9 @@ using BasicWeatherApp.ApiModels;
 using BasicWeatherApp.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
 
@@ -44,12 +46,13 @@ internal partial class WeatherInfoViewModel : ObservableObject
     private string city;
     [ObservableProperty]
     private string location;
-
-    
+    [ObservableProperty]
+    ObservableCollection<Forecastday> forecasts;
 
     public WeatherInfoViewModel()
     {
         _weatherApiService = new WeatherApiService();
+        Forecasts = new ObservableCollection<Forecastday>();
         Initialize();
     }
 
@@ -100,7 +103,8 @@ internal partial class WeatherInfoViewModel : ObservableObject
             string answer = await Application.Current.MainPage.DisplayPromptAsync("Update Your Location", "Let's make sure we have your current location. \nEnter your new location to receive accurate and personalized information.", "Update Location");
             if (answer != null)
             {
-                await SecureStorage.Default.SetAsync("location", answer);
+                Location = answer;
+                await SecureStorage.Default.SetAsync("location", Location);
                 await LoadData();
             }
            
@@ -157,6 +161,12 @@ internal partial class WeatherInfoViewModel : ObservableObject
         Humidity = $"{response.Current.humidity}";
         Cloud = $"{response.Current.cloud}";
         UV = $"{response.Current.uv}";
+        var array = response.Forecast.forecastday;
+        foreach( var item in array )
+        {
+            Forecasts.Add(item);
+        }
+       
     }
 
 
