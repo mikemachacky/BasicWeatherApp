@@ -47,7 +47,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
     [ObservableProperty]
     private string location;
     [ObservableProperty]
-    ObservableCollection<Forecastday> forecasts;
+    public ObservableCollection<Forecastday> forecasts;
 
     public WeatherInfoViewModel()
     {
@@ -149,19 +149,19 @@ internal partial class WeatherInfoViewModel : ObservableObject
     private async Task LoadData()
     {
         var response = await _weatherApiService.GetWeatherInfo(Location);
-        LastUpdated = response.Current.last_updated;
-        TempC = $"{response.Current.temp_c}°";
-        IsDay = $"{response.Current.is_day}";
-        Text = $"{response.Current.condition.text}";
-        Icon = $"https:{response.Current.condition.icon}";
-        Code = $"{response.Current.condition.code}";
-        WindDir = $"{response.Current.wind_dir}";
-        FeelsLikeC = $"Feels like {response.Current.feelslike_c}°";
-        City = $"{response.Location.name}";
-        Humidity = $"{response.Current.humidity}";
-        Cloud = $"{response.Current.cloud}";
-        UV = $"{response.Current.uv}";
-        var array = response.Forecast.forecastday;
+        LastUpdated = response.Current.Last_updated;
+        TempC = $"{response.Current.Temp_c}°";
+        IsDay = $"{response.Current.Is_day}";
+        Text = $"{response.Current.Condition.Text}";
+        Icon = $"https:{response.Current.Condition.Icon}";
+        Code = $"{response.Current.Condition.Code}";
+        WindDir = $"{response.Current.Wind_dir}";
+        FeelsLikeC = $"Feels like {response.Current.Feelslike_c}°";
+        City = $"{response.Location.Name}";
+        Humidity = $"{response.Current.Humidity}";
+        Cloud = $"{response.Current.Cloud}";
+        UV = $"{response.Current.Uv}";
+        var array = response.Forecast.Forecastday;
         foreach( var item in array )
         {
             Forecasts.Add(item);
