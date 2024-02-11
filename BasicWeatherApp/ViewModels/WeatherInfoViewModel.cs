@@ -98,7 +98,9 @@ internal partial class WeatherInfoViewModel : ObservableObject
     {
         try {
             Location = await Application.Current.MainPage.DisplayPromptAsync("Location", "Type new location here: ", "OK");
-            await RefreshData();
+            await SecureStorage.Default.SetAsync("location", Location);
+            await LoadData();
+
         }
         catch(Exception ex) {
            await Application.Current.MainPage.DisplayAlert("Error", $"{ex}", "OK");
@@ -115,17 +117,14 @@ internal partial class WeatherInfoViewModel : ObservableObject
 
         try
         {
+            Location = await SecureStorage.Default.GetAsync("location");
             if ( Location == null)
             {
-                await DisplayPopUp();
+                Location = await Application.Current.MainPage.DisplayPromptAsync("Set Location", "Enter the new location to update the displayed data.", "OK");
                 await SecureStorage.Default.SetAsync("location", Location);
-
-            }
-            else
-            {
-                await RefreshData();
             }
            
+            await LoadData();
             //await Application.Current.MainPage.DisplayAlert("Success", "Service works!", "OK");
         }
         catch (Exception ex)
@@ -139,7 +138,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
         }
     } 
 
-    private async Task RefreshData()
+    private async Task LoadData()
     {
         var response = await _weatherApiService.GetWeatherInfo(Location);
         LastUpdated = response.Current.last_updated;
