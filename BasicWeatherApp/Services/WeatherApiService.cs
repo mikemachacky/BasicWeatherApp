@@ -16,7 +16,7 @@ namespace BasicWeatherApp.Services
         }
 
         public async Task<WeatherApiResponse> GetWeatherInfo(string location) {
-            var response = await _httpClient.GetFromJsonAsync<WeatherApiResponse>($"v1/current.json?key={Constants.API_KEY}&q={location}&aqi=no");
+            var response = await _httpClient.GetFromJsonAsync<WeatherApiResponse>($"v1/forecast.json?key={Constants.API_KEY}&q={location}&days=7&aqi=no&alerts=no");
             //App.Current.MainPage.DisplayAlert("GetWeatherInfo", $"{response.Location.country}", "OK");
             return response;
         }

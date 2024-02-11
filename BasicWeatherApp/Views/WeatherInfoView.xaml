@@ -16,11 +16,9 @@
             </Style>
             <Style TargetType="Label" x:Key="labelTemperature">
                 <Setter Property="FontSize" Value="70"></Setter>
-                <Setter Property="Margin" Value="20,0"></Setter>
+                <Setter Property="Margin" Value="10,0"></Setter>
             </Style>
-            <Style TargetType="Grid">
-                <Setter Property="Margin" Value="10"></Setter>
-            </Style>
+            
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
@@ -28,7 +26,7 @@
                  >
         <ScrollView>
         <VerticalStackLayout>
-            <Grid RowSpacing="10" ColumnSpacing="10">
+            <Grid RowSpacing="10" ColumnSpacing="10" Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />
                     <RowDefinition Height="150" />
@@ -41,39 +39,53 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-               
-                <Label x:Name="Temperature" Text="{Binding TempC}"
+                 
+                    <Label x:Name="Temperature" Text="{Binding TempC}"
                     HorizontalOptions="Start"
                     VerticalOptions="Center" 
                     Style="{StaticResource labelTemperature}" />
+                    <Grid  Grid.RowSpan="1" Grid.Column="1" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="170"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                       
+                        <Image  Source="{Binding Icon}"  Grid.Row="0"
+                                HorizontalOptions="Center"
+                                VerticalOptions="End" >
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DisplayPopUpCommand}" ></TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        
+                        <Label Grid.Row="1" Text="(Tap icon to change location)" FontSize="Micro" VerticalTextAlignment="Start" HorizontalTextAlignment="Center" TextColor="LightGray"></Label>
+                    </Grid>
 
-                    <Image Source="{Binding Icon}" Grid.RowSpan="2" Grid.Column="1"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center" >
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding DisplayPopUpCommand}" ></TapGestureRecognizer>
-                        </Image.GestureRecognizers>
-                    </Image>
-
-                    <Grid Grid.Row="1" RowSpacing="0" Margin="18"
-            >
+                   
+                    
+                    <Grid Grid.Row="1" RowSpacing="0" Margin="14,0,0,20"
+            >   
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
+                        
                         <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="20"></RowDefinition>
                         <RowDefinition Height="20"></RowDefinition>
 
                         </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                           
+                        </Grid.ColumnDefinitions>
 
                         <Label Text="{Binding Text}" FontSize="Medium" FontAttributes="Bold" ></Label>
 
-                        <Label Grid.Row="2" Text="{Binding City}" FontSize="Header"></Label>
-                    <Label Grid.Row="3" Text="{Binding FeelsLikeC}" FontSize="Caption"></Label>
-                    <Label Grid.Row="4" Text="{Binding LastUpdated}" FontSize="Caption"></Label>
+                        <Label Grid.Row="1" Text="{Binding City}" FontSize="Header"></Label>
+                    <Label Grid.Row="2" Text="{Binding FeelsLikeC}" FontSize="Caption"></Label>
+                    <Label Grid.Row="3" Text="{Binding LastUpdated}" FontSize="Caption"></Label>
                 </Grid>
                 
                 <BoxView
