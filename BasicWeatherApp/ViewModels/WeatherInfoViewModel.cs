@@ -97,9 +97,13 @@ internal partial class WeatherInfoViewModel : ObservableObject
     public async Task DisplayPopUp()
     {
         try {
-            Location = await Application.Current.MainPage.DisplayPromptAsync("Location", "Type new location here: ", "OK");
-            await SecureStorage.Default.SetAsync("location", Location);
-            await LoadData();
+            string answer = await Application.Current.MainPage.DisplayPromptAsync("Update Your Location", "Let's make sure we have your current location. \nEnter your new location to receive accurate and personalized information.", "Update Location");
+            if (answer != null)
+            {
+                await SecureStorage.Default.SetAsync("location", answer);
+                await LoadData();
+            }
+           
 
         }
         catch(Exception ex) {
@@ -120,7 +124,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
             Location = await SecureStorage.Default.GetAsync("location");
             if ( Location == null)
             {
-                Location = await Application.Current.MainPage.DisplayPromptAsync("Set Location", "Enter the new location to update the displayed data.", "OK");
+                Location = await Application.Current.MainPage.DisplayPromptAsync("Set Your Location", "Help us tailor your experience by entering your desired location. \nWe'll show you the most relevant data for your area.", "Set Location");
                 await SecureStorage.Default.SetAsync("location", Location);
             }
            
