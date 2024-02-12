@@ -16,14 +16,12 @@ internal partial class WeatherInfoViewModel : ObservableObject
 {
 
     private readonly WeatherApiService _weatherApiService;
-
-
+    public ObservableCollection<Forecastday> ForecastApi { get; set; }
+    
     [ObservableProperty]
     string icon;
     [ObservableProperty]
     string location;
-    
-    ObservableCollection<Forecastday> ForecastApi;
     [ObservableProperty]
     Current currentApi;
     [ObservableProperty]
@@ -41,8 +39,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
         try
         {
             await FetchWeatherInfo();
-            // Now, you can show an alert or perform other actions after data is fetched
-            //await Application.Current.MainPage.DisplayAlert("Constructor", "Works", "Cancel");
+            
         }
         catch (Exception ex)
         {
