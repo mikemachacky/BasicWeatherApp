@@ -6,7 +6,8 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Windows.Input;
+
+
 
 
 namespace BasicWeatherApp.ViewModels;
@@ -16,43 +17,22 @@ internal partial class WeatherInfoViewModel : ObservableObject
 
     private readonly WeatherApiService _weatherApiService;
 
+
     [ObservableProperty]
-    private string lastUpdated;
+    string icon;
     [ObservableProperty]
-    private string tempC;
+    string location;
+    
+    ObservableCollection<Forecastday> ForecastApi;
     [ObservableProperty]
-    private string isDay;
+    Current currentApi;
     [ObservableProperty]
-    private string text;
-    [ObservableProperty]
-    private string icon;
-    [ObservableProperty]
-    private string code;
-    [ObservableProperty]
-    private string windKPH;
-    [ObservableProperty]
-    private string windDir;
-    [ObservableProperty]
-    private string pressure_mb;
-    [ObservableProperty]
-    private string humidity;
-    [ObservableProperty]
-    private string cloud;
-    [ObservableProperty]
-    private string feelsLikeC;
-    [ObservableProperty]
-    private string uV;
-    [ObservableProperty]
-    private string city;
-    [ObservableProperty]
-    private string location;
-    [ObservableProperty]
-    public ObservableCollection<Forecastday> forecasts;
+    ApiModels.Location locationApi;
 
     public WeatherInfoViewModel()
     {
         _weatherApiService = new WeatherApiService();
-        Forecasts = new ObservableCollection<Forecastday>();
+        ForecastApi = new ObservableCollection<Forecastday>();
         Initialize();
     }
 
@@ -105,7 +85,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
             {
                 Location = answer;
                 await SecureStorage.Default.SetAsync("location", Location);
-                await LoadData();
+                await LoadDataAsync();
             }
            
 
@@ -132,7 +112,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
                 await SecureStorage.Default.SetAsync("location", Location);
             }
            
-            await LoadData();
+            await LoadDataAsync();
             //await Application.Current.MainPage.DisplayAlert("Success", "Service works!", "OK");
         }
         catch (Exception ex)
@@ -146,26 +126,25 @@ internal partial class WeatherInfoViewModel : ObservableObject
         }
     } 
 
-    private async Task LoadData()
+    private async Task LoadDataAsync()
     {
-        var response = await _weatherApiService.GetWeatherInfo(Location);
-        LastUpdated = response.Current.Last_updated;
-        TempC = $"{response.Current.Temp_c}°";
-        IsDay = $"{response.Current.Is_day}";
-        Text = $"{response.Current.Condition.Text}";
-        Icon = $"https:{response.Current.Condition.Icon}";
-        Code = $"{response.Current.Condition.Code}";
-        WindDir = $"{response.Current.Wind_dir}";
-        FeelsLikeC = $"Feels like {response.Current.Feelslike_c}°";
-        City = $"{response.Location.Name}";
-        Humidity = $"{response.Current.Humidity}";
-        Cloud = $"{response.Current.Cloud}";
-        UV = $"{response.Current.Uv}";
-        var array = response.Forecast.Forecastday;
-        foreach( var item in array )
+        try
         {
-            Forecasts.Add(item);
+            var response = await _weatherApiService.GetWeatherInfo(Location);
+            CurrentApi = response.Current;
+            LocationApi = response.Location;
+            foreach (var item in response.Forecast.Forecastday)
+            {
+                ForecastApi.Add(item);
+            }
+            Icon = $"https:{response.Current.Condition.Icon}";
+          
         }
+        catch(Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Error Occured", $"{ex}", "OK");
+        }
+       
        
     }
 

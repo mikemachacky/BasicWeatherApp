@@ -13,6 +13,7 @@ public partial class WeatherInfoView : ContentPage
           
         }
         BindingContext = new WeatherInfoViewModel();
+        
 
     }
 

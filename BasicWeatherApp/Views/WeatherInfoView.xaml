@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BasicWeatherApp.Views.WeatherInfoView"
              xmlns:viewmodel="clr-namespace:BasicWeatherApp.ViewModels"
-             x:DataType="viewmodel:WeatherInfoViewModel"
-
+             xmlns:apimodel="clr-namespace:BasicWeatherApp.ApiModels"
              Title="Weather Info"
              Background="#1f1f1f"
              Shell.BackgroundColor="#1f1f1f">
@@ -40,12 +39,19 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                 
-                    <Label x:Name="Temperature" Text="{Binding TempC}"
-                    HorizontalOptions="Start"
+
+                    <Label x:Name="Temperature" HorizontalOptions="Start"
                     VerticalOptions="Center" 
-                    Style="{StaticResource labelTemperature}" />
-                    <Grid  Grid.RowSpan="1" Grid.Column="1" >
+                    Style="{StaticResource labelTemperature}"  >
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding CurrentApi.Temp_c}"></Span>
+                                <Span Text="°"></Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                        <Grid  Grid.RowSpan="1" Grid.Column="1" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="170"></RowDefinition>
                             <RowDefinition Height="50"></RowDefinition>
@@ -82,11 +88,21 @@
                            
                         </Grid.ColumnDefinitions>
 
-                        <Label Text="{Binding Text}" FontSize="Medium" FontAttributes="Bold" ></Label>
+                        <Label Text="{Binding CurrentApi.Condition.Text}" FontSize="Medium" FontAttributes="Bold" ></Label>
 
-                        <Label Grid.Row="1" Text="{Binding City}" FontSize="Header"></Label>
-                    <Label Grid.Row="2" Text="{Binding FeelsLikeC}" FontSize="Caption"></Label>
-                    <Label Grid.Row="3" Text="{Binding LastUpdated}" FontSize="Caption"></Label>
+                        <Label Grid.Row="1" Text="{Binding LocationApi.Name}" FontSize="Header"></Label>
+                    <Label Grid.Row="2" FontSize="Caption">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Feels like "></Span>
+                                    <Span Text="{Binding CurrentApi.Feelslike_c}"></Span>
+                                    <Span Text="°C"></Span>
+                                </FormattedString>
+                            </Label.FormattedText>
+                    </Label>
+                        <Label Grid.Row="3" Text="{Binding CurrentApi.Last_updated}" FontSize="Caption">
+                           
+                    </Label>
                 </Grid>
                 
                 <BoxView
@@ -101,15 +117,19 @@
                     </Grid.RowDefinitions>
                         <Label Text="" FontAttributes="Bold" />
                     <BoxView Color="SlateGray" Grid.Row="1" ></BoxView>
-                        <CollectionView Grid.Row="1" ItemsSource="{Binding Forecasts}">
-                            <CollectionView.ItemTemplate>
+                        <ListView ItemsSource="{Binding ForecastApi}" >
+                            <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <HorizontalStackLayout>
-                                   
-                                    </HorizontalStackLayout>
+                                    <ViewCell>
+                                        <StackLayout>
+                                            <Label Text="{Binding Day.Maxtemp_c}" />
+                                            <Label Text="{Binding Date}" />
+                                        </StackLayout>
+                                    </ViewCell>
                                 </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
                     </Grid>
                 <BoxView
                   Grid.Row="3"
