@@ -130,6 +130,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
             var response = await _weatherApiService.GetWeatherInfo(Location);
             CurrentApi = response.Current;
             LocationApi = response.Location;
+            ForecastApi.Clear();
             foreach (var item in response.Forecast.Forecastday)
             {
                 ForecastApi.Add(item);

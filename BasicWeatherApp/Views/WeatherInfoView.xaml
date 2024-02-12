@@ -122,21 +122,31 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Forecastday">
                                     <ViewCell>
-                                        <StackLayout>
-                                            <Label Text="{Binding Date}"></Label>
-                                            <Label Text="{Binding Day.Maxtemp_c}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="150"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="{Binding Date}" VerticalTextAlignment="Center"></Label>
+                                            <Label Grid.Column="1" HorizontalTextAlignment="Center"
+                                              VerticalTextAlignment="Center"  >
                                                 <Label.FormattedText>
                                                     <FormattedString>
-                                                        <Span Text="Temperature: "></Span>
-                                                        <Span Text="{Binding Day.Maxtemp_c}"></Span>
-                                                        <Span Text="°/"></Span>
-                                                        <Span Text="{Binding Day.Mintemp_c}"></Span>
-                                                        <Span Text="°"></Span>
+                                                       
+                                                        <Span Text="{Binding Day.Maxtemp_c}" FontSize="Large"></Span>
+                                                        <Span Text="°/" FontSize="Large"></Span>
+                                                        <Span Text="{Binding Day.Mintemp_c}" FontSize="Large"></Span>
+                                                        <Span Text="°" FontSize="Large"></Span>
 
                                                     </FormattedString>
                                                 </Label.FormattedText>
                                             </Label>
-                                        </StackLayout>
+                                            <Image Grid.Column="2" Source="{Binding Day.Condition.Icon, StringFormat='https:{0}'}"></Image>
+                                        </Grid>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
