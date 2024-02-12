@@ -133,9 +133,9 @@
                                         </Label.FormattedText>
                                     </Label>
                                     <Image Grid.Row="2" WidthRequest="50" Source="{Binding Condition.Icon, StringFormat='https:{0}'}" />
-                                    <HorizontalStackLayout Grid.Row="3">
-                                        <Image Grid.Row="2" Source="drop.png" />
-                                        <Label  Text="{Binding Chance_of_rain, StringFormat='{0}%'}"></Label>
+                                    <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Center">
+                                        <Image WidthRequest="15" Source="drop.png" VerticalOptions="Center" />
+                                        <Label  Text="{Binding Chance_of_rain, StringFormat='{0}%'}" VerticalTextAlignment="Center"></Label>
                                     </HorizontalStackLayout>
                                    
                                 </Grid>
