@@ -110,52 +110,40 @@
              Grid.Row="2"
              Grid.ColumnSpan="2"
              />
-                <Grid Grid.Row="2"
-              Grid.ColumnSpan="2" Margin="10" >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                        <Label Text="This week forecast" FontAttributes="Bold" FontSize="Body" />
-                       
-                        <ListView ItemsSource="{Binding ForecastApi}" Grid.Row="2">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="model:Forecastday">
-                                    <ViewCell>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition></RowDefinition>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                <ColumnDefinition Width="150"></ColumnDefinition>
-                                                <ColumnDefinition></ColumnDefinition>
-                                            </Grid.ColumnDefinitions>
-                                            <Label Text="{Binding Date}" VerticalTextAlignment="Center"></Label>
-                                            <Label Grid.Column="1" HorizontalTextAlignment="Center"
-                                              VerticalTextAlignment="Center"  >
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                       
-                                                        <Span Text="{Binding Day.Maxtemp_c}" FontSize="Large"></Span>
-                                                        <Span Text="°/" FontSize="Large"></Span>
-                                                        <Span Text="{Binding Day.Mintemp_c}" FontSize="Large"></Span>
-                                                        <Span Text="°" FontSize="Large"></Span>
+                    <CollectionView    Grid.Row="2"
+   Grid.ColumnSpan="2" ItemsSource="{Binding HourApi}"  ItemsLayout="HorizontalList">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Hour">
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
 
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <Image Grid.Column="2" Source="{Binding Day.Condition.Icon, StringFormat='https:{0}'}"></Image>
-                                        </Grid>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                      
+                                    <Label Text="{Binding Time, StringFormat='{0:HH:mm}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                    <Label Grid.Row="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Temp_c}" />
+                                                <Span Text="°C"></Span>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Image Grid.Row="2" WidthRequest="50" Source="{Binding Condition.Icon, StringFormat='https:{0}'}" />
+                                    <HorizontalStackLayout Grid.Row="3">
+                                        <Image Grid.Row="2" Source="drop.png" />
+                                        <Label  Text="{Binding Chance_of_rain, StringFormat='{0}%'}"></Label>
+                                    </HorizontalStackLayout>
+                                   
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
-
-                    </Grid>
-                <BoxView
+                    <BoxView
                   Grid.Row="3"
                   Grid.ColumnSpan="2"
                   />
@@ -190,34 +178,52 @@
                 </Grid>
                 <BoxView Grid.Row="6"
 Grid.ColumnSpan="2"></BoxView>
-                <ListView
-                  Grid.Row="6"
-                  Grid.ColumnSpan="2"
-                 >
-                   
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Label Text="Day"></Label>
-                                <Label Text="Humidity" Grid.Column="1"></Label>
-                            </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    
-                </ListView>
+                    <Grid Grid.Row="6"
+Grid.ColumnSpan="2" Margin="10" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Text="This week forecast" FontAttributes="Bold" FontSize="Body" />
+
+                        <ListView ItemsSource="{Binding ForecastApi}" Grid.Row="2">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:Forecastday">
+                                    <ViewCell>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="150"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Text="{Binding Date}" VerticalTextAlignment="Center"></Label>
+                                            <Label Grid.Column="1" HorizontalTextAlignment="Center"
+                                              VerticalTextAlignment="Center"  >
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+
+                                                        <Span Text="{Binding Day.Maxtemp_c}" FontSize="Large"></Span>
+                                                        <Span Text="°/" FontSize="Large"></Span>
+                                                        <Span Text="{Binding Day.Mintemp_c}" FontSize="Large"></Span>
+                                                        <Span Text="°" FontSize="Large"></Span>
+
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Image Grid.Column="2" Source="{Binding Day.Condition.Icon, StringFormat='https:{0}'}"></Image>
+                                        </Grid>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
 
 
-            </Grid>
+
+                    </Grid>
+                </Grid>
         </VerticalStackLayout>
     </ScrollView>
     </RefreshView>

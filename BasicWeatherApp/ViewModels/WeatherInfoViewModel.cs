@@ -17,6 +17,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
 
     private readonly WeatherApiService _weatherApiService;
     public ObservableCollection<Forecastday> ForecastApi { get; set; }
+    public ObservableCollection<Hour> HourApi { get; set; }
     
     [ObservableProperty]
     string icon;
@@ -26,11 +27,13 @@ internal partial class WeatherInfoViewModel : ObservableObject
     Current currentApi;
     [ObservableProperty]
     ApiModels.Location locationApi;
+  
 
     public WeatherInfoViewModel()
     {
         _weatherApiService = new WeatherApiService();
         ForecastApi = new ObservableCollection<Forecastday>();
+        HourApi = new ObservableCollection<Hour>();
         Initialize();
     }
 
@@ -131,9 +134,28 @@ internal partial class WeatherInfoViewModel : ObservableObject
             CurrentApi = response.Current;
             LocationApi = response.Location;
             ForecastApi.Clear();
+            HourApi.Clear();
             foreach (var item in response.Forecast.Forecastday)
             {
+                if(DateTime.Parse(item.Date).DayOfWeek == DateTime.Now.DayOfWeek)
+                {
+                    item.Date = "Today";
+                }
+                else
+                {
+                    item.Date = DateTime.Parse(item.Date).DayOfWeek.ToString();
+                }
+               
                 ForecastApi.Add(item);
+            }
+            foreach (var item in response.Forecast.Forecastday[0].Hour)
+            {
+                if(DateTime.Parse(item.Time) > DateTime.Now)
+                {
+                    item.Time = DateTime.Parse(item.Time).ToString("HH:mm");
+                    HourApi.Add(item);
+                }
+               
             }
             Icon = $"https:{response.Current.Condition.Icon}";
           
