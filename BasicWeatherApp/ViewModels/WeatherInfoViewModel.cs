@@ -62,22 +62,18 @@ internal partial class WeatherInfoViewModel : ObservableObject
     [RelayCommand]
     public async Task Refresh()
     {
-        if (!IsRefreshing)
+        try
         {
             IsRefreshing = true;
-            try
-            {
-                await FetchWeatherInfo();
-                await App.Current.MainPage.DisplayAlert("Refresh", "Works", "OK");
-            }
-            catch
-            {
-                await App.Current.MainPage.DisplayAlert("Refresh", "Doesn't work", "OK");
-            }
-            finally
-            {
-                IsRefreshing = false;
-            }
+            await LoadDataAsync();
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Error occured", $"{ex}", "OK");
+        }
+        finally
+        {
+            IsRefreshing = false;
         }
     }
 
@@ -140,6 +136,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
             LocationApi = response.Location;
             ForecastApi.Clear();
             HourApi.Clear();
+            AstroInfo.Clear();
             foreach (var item in response.Forecast.Forecastday)
             {
                 if(DateTime.Parse(item.Date).DayOfWeek == DateTime.Now.DayOfWeek)
@@ -180,6 +177,6 @@ internal partial class WeatherInfoViewModel : ObservableObject
        
        
     }
-
+   
 
 }
