@@ -148,16 +148,24 @@ internal partial class WeatherInfoViewModel : ObservableObject
                
                 ForecastApi.Add(item);
             }
-            foreach (var item in response.Forecast.Forecastday[0].Hour)
+            DateTime now = DateTime.Now;
+
+            foreach (var item in response.Forecast.Forecastday)
             {
-                if(DateTime.Parse(item.Time) > DateTime.Now)
+                foreach (var hour in item.Hour)
                 {
-                    item.Time = DateTime.Parse(item.Time).ToString("HH:mm");
-                    HourApi.Add(item);
+                    DateTime hourTime = DateTime.Parse(hour.Time);
+                    TimeSpan difference = hourTime - now;
+
+                    if ((hourTime.Date == now.Date && difference.TotalHours > 0 && difference.TotalHours <= 12) ||
+                        (hourTime.Date != now.Date && hourTime > now && hourTime <= now.AddHours(12)))
+                    {
+                        hour.Time = hourTime.ToString("HH:mm");
+                        HourApi.Add(hour);
+                    }
                 }
-               
             }
-            Icon = $"https:{response.Current.Condition.Icon}";
+                Icon = $"https:{response.Current.Condition.Icon}";
           
         }
         catch(Exception ex)
