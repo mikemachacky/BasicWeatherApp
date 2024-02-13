@@ -30,12 +30,12 @@
                  >
         <ScrollView>
         <VerticalStackLayout>
-            <Grid RowSpacing="10" ColumnSpacing="10" Margin="10,0,10,0">
+            <Grid RowSpacing="15" ColumnSpacing="0" Margin="10,0,10,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />
-                    <RowDefinition Height="150" />
+                    <RowDefinition Height="120" />
                     <RowDefinition Height="200" />
-                    <RowDefinition Height="100" />
+                    <RowDefinition Height="90" />
                     <RowDefinition Height="300" />
 
                 </Grid.RowDefinitions>
@@ -169,7 +169,7 @@
                                 <Grid.RowDefinitions>
                                        <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Label Text="{Binding .}"   FontSize="Body" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
+                                <Label Text="{Binding .}"   FontSize="Body" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
                                 
                             </Grid>
                         </DataTemplate>
