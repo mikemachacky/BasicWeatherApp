@@ -4,10 +4,6 @@ using BasicWeatherApp.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-
-
 
 
 namespace BasicWeatherApp.ViewModels;
@@ -29,6 +25,8 @@ internal partial class WeatherInfoViewModel : ObservableObject
     Current currentApi;
     [ObservableProperty]
     ApiModels.Location locationApi;
+    [ObservableProperty]
+    string lastUpdated;
     
   
 
@@ -133,10 +131,15 @@ internal partial class WeatherInfoViewModel : ObservableObject
         {
             var response = await _weatherApiService.GetWeatherInfo(Location);
             CurrentApi = response.Current;
+            LastUpdated = $"{DateTime.Parse(CurrentApi.Last_updated).ToString("dddd")} {DateTime.Parse(CurrentApi.Last_updated).ToString("HH:mm")}";
             LocationApi = response.Location;
             ForecastApi.Clear();
             HourApi.Clear();
             AstroInfo.Clear();
+
+           
+
+
             foreach (var item in response.Forecast.Forecastday)
             {
                 if(DateTime.Parse(item.Date).DayOfWeek == DateTime.Now.DayOfWeek)

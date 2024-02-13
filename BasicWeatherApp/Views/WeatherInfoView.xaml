@@ -16,8 +16,8 @@
                 
             </Style>
             <Style TargetType="Label" x:Key="labelTemperature">
-                <Setter Property="FontSize" Value="70"></Setter>
-                <Setter Property="Margin" Value="10,0"></Setter>
+                <Setter Property="FontSize" Value="65"></Setter>
+                <Setter Property="Margin" Value="20,0,0,0"></Setter>
             </Style>
             <Style TargetType="ListView">
                 <Setter Property="SelectionMode" Value="None"></Setter>
@@ -30,7 +30,7 @@
                  >
         <ScrollView>
         <VerticalStackLayout>
-            <Grid RowSpacing="10" ColumnSpacing="10" Margin="10">
+            <Grid RowSpacing="10" ColumnSpacing="10" Margin="10,0,10,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100" />
                     <RowDefinition Height="150" />
@@ -77,7 +77,7 @@
 
                    
                     
-                    <Grid Grid.Row="1" RowSpacing="0" Margin="14,0,0,20"
+                    <Grid Grid.Row="1" RowSpacing="0" Margin="24,0,0,0"
             >   
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"></RowDefinition>
@@ -104,7 +104,7 @@
                                 </FormattedString>
                             </Label.FormattedText>
                     </Label>
-                        <Label Grid.Row="3" Text="{Binding CurrentApi.Last_updated}" FontSize="Caption">
+                        <Label Grid.Row="3" Text="{Binding LastUpdated}" FontSize="Caption">
                            
                     </Label>
                 </Grid>
@@ -117,7 +117,7 @@
    Grid.ColumnSpan="2" ItemsSource="{Binding HourApi}"  ItemsLayout="HorizontalList">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Hour">
-                                <Grid Margin="10">
+                                <Grid Padding="10">
                                     <Grid.RowDefinitions>
                                         <RowDefinition></RowDefinition>
                                         <RowDefinition></RowDefinition>
@@ -159,7 +159,7 @@
                   Grid.ColumnSpan="2"
                   />
                 <Grid Grid.Row="3"
-                            Grid.ColumnSpan="2">
+                            Grid.ColumnSpan="2" >
                 <CarouselView IndicatorView="CarouselIndicatorView" ItemsSource="{Binding AstroInfo}">
                    
                     <CarouselView.ItemTemplate>
@@ -182,7 +182,7 @@
                 <BoxView Grid.Row="6"
 Grid.ColumnSpan="2"></BoxView>
                     <Grid Grid.Row="6"
-Grid.ColumnSpan="2" Margin="10" >
+Grid.ColumnSpan="2" Padding="20" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"></RowDefinition>
                             <RowDefinition Height="*"></RowDefinition>
