@@ -19,7 +19,10 @@
                 <Setter Property="FontSize" Value="70"></Setter>
                 <Setter Property="Margin" Value="10,0"></Setter>
             </Style>
-            
+            <Style TargetType="ListView">
+                <Setter Property="SelectionMode" Value="None"></Setter>
+            </Style>
+          
         </ResourceDictionary>
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
@@ -33,7 +36,7 @@
                     <RowDefinition Height="150" />
                     <RowDefinition Height="200" />
                     <RowDefinition Height="100" />
-                    <RowDefinition Height="200" />
+                    <RowDefinition Height="300" />
 
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -123,7 +126,7 @@
                                         <RowDefinition></RowDefinition>
                                     </Grid.RowDefinitions>
 
-                                    <Label Text="{Binding Time, StringFormat='{0:HH:mm}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                    <Label Text="{Binding Time, StringFormat='{0:HH:mm}'}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" />
                                     <Label Grid.Row="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">
                                         <Label.FormattedText>
                                             <FormattedString>
@@ -133,11 +136,19 @@
                                         </Label.FormattedText>
                                     </Label>
                                     <Image Grid.Row="2" WidthRequest="50" Source="{Binding Condition.Icon, StringFormat='https:{0}'}" />
-                                    <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Center">
+                                    
+                                    <Label Grid.Row="3" VerticalTextAlignment="Center" HorizontalTextAlignment="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Pressure_mb}"></Span>
+                                                <Span Text=" hPa" ></Span>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <HorizontalStackLayout Grid.Row="4" HorizontalOptions="Center">
                                         <Image WidthRequest="15" Source="drop.png" VerticalOptions="Center" />
                                         <Label  Text="{Binding Chance_of_rain, StringFormat='{0}%'}" VerticalTextAlignment="Center"></Label>
                                     </HorizontalStackLayout>
-                                   
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -149,30 +160,22 @@
                   />
                 <Grid Grid.Row="3"
                             Grid.ColumnSpan="2">
-                <CarouselView IndicatorView="CarouselIndicatorView">
-                    <CarouselView.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Item 1</x:String>
-                            <x:String>Item 2</x:String>
-                            <x:String>Item 3</x:String>
-                        </x:Array>
-                    </CarouselView.ItemsSource>
+                <CarouselView IndicatorView="CarouselIndicatorView" ItemsSource="{Binding AstroInfo}">
+                   
                     <CarouselView.ItemTemplate>
                     
-                        <DataTemplate>
+                        <DataTemplate x:DataType="x:String">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
+                                       <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Label Text="{Binding .}" FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center"></Label>
+                                <Label Text="{Binding .}"   FontSize="Body" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
                                 
                             </Grid>
                         </DataTemplate>
                     </CarouselView.ItemTemplate>
                 </CarouselView>
-                <IndicatorView x:Name="CarouselIndicatorView" HorizontalOptions="Center" VerticalOptions="End">
+                <IndicatorView x:Name="CarouselIndicatorView" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,15">
 
                 </IndicatorView>
                 </Grid>
@@ -186,7 +189,7 @@ Grid.ColumnSpan="2" Margin="10" >
                         </Grid.RowDefinitions>
                         <Label Text="This week forecast" FontAttributes="Bold" FontSize="Body" />
 
-                        <ListView ItemsSource="{Binding ForecastApi}" Grid.Row="2">
+                        <ListView ItemsSource="{Binding ForecastApi}" Grid.Row="2" >
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Forecastday">
                                     <ViewCell>

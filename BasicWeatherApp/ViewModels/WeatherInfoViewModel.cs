@@ -18,6 +18,8 @@ internal partial class WeatherInfoViewModel : ObservableObject
     private readonly WeatherApiService _weatherApiService;
     public ObservableCollection<Forecastday> ForecastApi { get; set; }
     public ObservableCollection<Hour> HourApi { get; set; }
+    public ObservableCollection<string> AstroInfo { get; set; }
+  
     
     [ObservableProperty]
     string icon;
@@ -27,6 +29,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
     Current currentApi;
     [ObservableProperty]
     ApiModels.Location locationApi;
+    
   
 
     public WeatherInfoViewModel()
@@ -34,6 +37,8 @@ internal partial class WeatherInfoViewModel : ObservableObject
         _weatherApiService = new WeatherApiService();
         ForecastApi = new ObservableCollection<Forecastday>();
         HourApi = new ObservableCollection<Hour>();
+        AstroInfo = new ObservableCollection<string>();
+       
         Initialize();
     }
 
@@ -140,18 +145,15 @@ internal partial class WeatherInfoViewModel : ObservableObject
                 if(DateTime.Parse(item.Date).DayOfWeek == DateTime.Now.DayOfWeek)
                 {
                     item.Date = "Today";
+                    AstroInfo.Add($"Sunrise: {item.Astro.Sunrise} \nSunset: {item.Astro.Sunset}");
+                    AstroInfo.Add($"Moonrise: {item.Astro.Moonrise} \nMoonset: {item.Astro.Moonset}");
+                    AstroInfo.Add($"Phase: {item.Astro.Moon_phase}\nIllumination:{item.Astro.Moon_illumination}%");
                 }
                 else
                 {
                     item.Date = DateTime.Parse(item.Date).DayOfWeek.ToString();
                 }
-               
-                ForecastApi.Add(item);
-            }
-            DateTime now = DateTime.Now;
-
-            foreach (var item in response.Forecast.Forecastday)
-            {
+                DateTime now = DateTime.Now;
                 foreach (var hour in item.Hour)
                 {
                     DateTime hourTime = DateTime.Parse(hour.Time);
@@ -164,7 +166,10 @@ internal partial class WeatherInfoViewModel : ObservableObject
                         HourApi.Add(hour);
                     }
                 }
+                ForecastApi.Add(item);
             }
+            
+
                 Icon = $"https:{response.Current.Condition.Icon}";
           
         }
