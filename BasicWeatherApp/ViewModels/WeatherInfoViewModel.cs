@@ -4,7 +4,9 @@ using BasicWeatherApp.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace BasicWeatherApp.ViewModels;
 
@@ -24,11 +26,14 @@ internal partial class WeatherInfoViewModel : ObservableObject
     [ObservableProperty]
     Current currentApi;
     [ObservableProperty]
-    ApiModels.Location locationApi;
-    [ObservableProperty]
     string lastUpdated;
-    
-  
+    [ObservableProperty]
+    private bool isRefreshing;
+
+    [ObservableProperty]
+    ApiModels.Location locationApi;
+
+
 
     public WeatherInfoViewModel()
     {
@@ -36,7 +41,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
         ForecastApi = new ObservableCollection<Forecastday>();
         HourApi = new ObservableCollection<Hour>();
         AstroInfo = new ObservableCollection<string>();
-       
+        LoadLocalStorageAsync();
         Initialize();
     }
 
@@ -44,7 +49,8 @@ internal partial class WeatherInfoViewModel : ObservableObject
     {
         try
         {
-            await FetchWeatherInfo();
+         
+            await FetchWeatherInfoAsync();
             
         }
         catch (Exception ex)
@@ -53,8 +59,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
         }
     }
 
-    [ObservableProperty]
-    private bool isRefreshing;
+
 
 
     [RelayCommand]
@@ -95,9 +100,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
         }
     }
 
-
-    [RelayCommand]
-    public async Task FetchWeatherInfo()
+    public async Task FetchWeatherInfoAsync()
     {
         IsRefreshing = true;
         
@@ -112,7 +115,7 @@ internal partial class WeatherInfoViewModel : ObservableObject
             }
            
             await LoadDataAsync();
-            //await Application.Current.MainPage.DisplayAlert("Success", "Service works!", "OK");
+            
         }
         catch (Exception ex)
         {
@@ -130,47 +133,51 @@ internal partial class WeatherInfoViewModel : ObservableObject
         try
         {
             var response = await _weatherApiService.GetWeatherInfo(Location);
-            CurrentApi = response.Current;
-            LastUpdated = $"{DateTime.Parse(CurrentApi.Last_updated).ToString("dddd")} {DateTime.Parse(CurrentApi.Last_updated).ToString("HH:mm")}";
-            LocationApi = response.Location;
-            ForecastApi.Clear();
-            HourApi.Clear();
-            AstroInfo.Clear();
+            if(response != null) {
+                CurrentApi = response.Current;
+                await SecureStorage.SetAsync("CurrentApi", JsonSerializer.Serialize(CurrentApi));
+                LastUpdated = $"{DateTime.Parse(CurrentApi.Last_updated).ToString("dddd")} {DateTime.Parse(CurrentApi.Last_updated).ToString("HH:mm")}";
+                await SecureStorage.SetAsync("LastUpdated", LastUpdated);
+                LocationApi = response.Location;
+                await SecureStorage.SetAsync("LocationApi", JsonSerializer.Serialize(LocationApi));
+                Icon = $"https:{response.Current.Condition.Icon}";
+                await SecureStorage.SetAsync("Icon", Icon);
+                ForecastApi.Clear();
+                HourApi.Clear();
+                AstroInfo.Clear();
 
-           
-
-
-            foreach (var item in response.Forecast.Forecastday)
-            {
-                if(DateTime.Parse(item.Date).DayOfWeek == DateTime.Now.DayOfWeek)
+                foreach (var item in response.Forecast.Forecastday)
                 {
-                    item.Date = "Today";
-                    AstroInfo.Add($"Sunrise: {item.Astro.Sunrise} \nSunset: {item.Astro.Sunset}");
-                    AstroInfo.Add($"Moonrise: {item.Astro.Moonrise} \nMoonset: {item.Astro.Moonset}");
-                    AstroInfo.Add($"Phase: {item.Astro.Moon_phase}\nIllumination:{item.Astro.Moon_illumination}%");
-                }
-                else
-                {
-                    item.Date = DateTime.Parse(item.Date).DayOfWeek.ToString();
-                }
-                DateTime now = DateTime.Now;
-                foreach (var hour in item.Hour)
-                {
-                    DateTime hourTime = DateTime.Parse(hour.Time);
-                    TimeSpan difference = hourTime - now;
-
-                    if ((hourTime.Date == now.Date && difference.TotalHours > 0 && difference.TotalHours <= 12) ||
-                        (hourTime.Date != now.Date && hourTime > now && hourTime <= now.AddHours(12)))
+                    if (DateTime.Parse(item.Date).DayOfWeek == DateTime.Now.DayOfWeek)
                     {
-                        hour.Time = hourTime.ToString("HH:mm");
-                        HourApi.Add(hour);
+                        item.Date = "Today";
+                        AstroInfo.Add($"Sunrise: {item.Astro.Sunrise} \nSunset: {item.Astro.Sunset}");
+                        AstroInfo.Add($"Moonrise: {item.Astro.Moonrise} \nMoonset: {item.Astro.Moonset}");
+                        AstroInfo.Add($"Phase: {item.Astro.Moon_phase}\nIllumination:{item.Astro.Moon_illumination}%");
                     }
+                    else
+                    {
+                        item.Date = DateTime.Parse(item.Date).DayOfWeek.ToString();
+                    }
+                    DateTime now = DateTime.Now;
+                    foreach (var hour in item.Hour)
+                    {
+                        DateTime hourTime = DateTime.Parse(hour.Time);
+                        TimeSpan difference = hourTime - now;
+
+                        if ((hourTime.Date == now.Date && difference.TotalHours > 0 && difference.TotalHours <= 12) ||
+                            (hourTime.Date != now.Date && hourTime > now && hourTime <= now.AddHours(12)))
+                        {
+                            hour.Time = hourTime.ToString("HH:mm");
+                            HourApi.Add(hour);
+                        }
+                    }
+                    ForecastApi.Add(item);
                 }
-                ForecastApi.Add(item);
             }
+           
             
 
-                Icon = $"https:{response.Current.Condition.Icon}";
           
         }
         catch(Exception ex)
@@ -180,6 +187,12 @@ internal partial class WeatherInfoViewModel : ObservableObject
        
        
     }
-   
+    public async void LoadLocalStorageAsync()
+    {
+        CurrentApi = JsonSerializer.Deserialize<Current>(await SecureStorage.GetAsync( "CurrentApi"));
+        LastUpdated = await SecureStorage.GetAsync("LastUpdated");
+        LocationApi = JsonSerializer.Deserialize<ApiModels.Location>( await SecureStorage.GetAsync("LocationApi"));
+        Icon = await SecureStorage.GetAsync("Icon");
+    }
 
 }
