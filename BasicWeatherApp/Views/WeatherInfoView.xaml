@@ -5,7 +5,7 @@
              xmlns:model="clr-namespace:BasicWeatherApp.ApiModels"
              xmlns:viewmodel="clr-namespace:BasicWeatherApp.ViewModels"
              x:DataType="viewmodel:WeatherInfoViewModel"
-             Title="Weather Info"
+             Title="Today's weather"
              Background="#1f1f1f"
              Shell.BackgroundColor="#1f1f1f">
     <ContentPage.Resources>
