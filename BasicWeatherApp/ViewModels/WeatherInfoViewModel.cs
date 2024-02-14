@@ -189,10 +189,21 @@ internal partial class WeatherInfoViewModel : ObservableObject
     }
     public async void LoadLocalStorageAsync()
     {
-        CurrentApi = JsonSerializer.Deserialize<Current>(await SecureStorage.GetAsync( "CurrentApi"));
-        LastUpdated = await SecureStorage.GetAsync("LastUpdated");
-        LocationApi = JsonSerializer.Deserialize<ApiModels.Location>( await SecureStorage.GetAsync("LocationApi"));
-        Icon = await SecureStorage.GetAsync("Icon");
+        try
+        {
+            if (Location != null)
+            {
+                CurrentApi = JsonSerializer.Deserialize<Current>(await SecureStorage.GetAsync("CurrentApi"));
+                LastUpdated = await SecureStorage.GetAsync("LastUpdated");
+                LocationApi = JsonSerializer.Deserialize<ApiModels.Location>(await SecureStorage.GetAsync("LocationApi"));
+                Icon = await SecureStorage.GetAsync("Icon");
+            }
+        }catch(Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Error", $"{ex}", "OK");
+        }
+        
+        
     }
 
 }
