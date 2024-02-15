@@ -6,8 +6,8 @@
              xmlns:viewmodel="clr-namespace:BasicWeatherApp.ViewModels"
              x:DataType="viewmodel:WeatherInfoViewModel"
              Title="Today's weather"
-             Background="#1f1f1f"
-             Shell.BackgroundColor="#1f1f1f">
+             Background="{AppThemeBinding Dark={StaticResource DarkBgColor}, Light={StaticResource Primary}}"
+             Shell.BackgroundColor="{AppThemeBinding Dark={StaticResource DarkBgColor}, Light={StaticResource Primary}}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="BoxView">
