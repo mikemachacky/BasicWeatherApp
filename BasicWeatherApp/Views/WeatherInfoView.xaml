@@ -4,11 +4,17 @@
              x:Class="BasicWeatherApp.Views.WeatherInfoView"
              xmlns:model="clr-namespace:BasicWeatherApp.ApiModels"
              xmlns:viewmodel="clr-namespace:BasicWeatherApp.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewmodel:WeatherInfoViewModel"
              Title="Today's weather"
              Background="{AppThemeBinding Dark={StaticResource DarkBgColor}, Light={StaticResource Primary}}"
              Shell.BackgroundColor="{AppThemeBinding Dark={StaticResource DarkBgColor}, Light={StaticResource Primary}}"
              Shell.TitleColor="{AppThemeBinding Dark={StaticResource DarkText}, Light={StaticResource LightText}}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{AppThemeBinding Dark={StaticResource DarkBgColor},Light={StaticResource Primary}}" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="BoxView">
@@ -37,7 +43,7 @@
                     <RowDefinition Height="120" />
                     <RowDefinition Height="200" />
                     <RowDefinition Height="90" />
-                    <RowDefinition Height="300" />
+                    <RowDefinition Height="*" />
 
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
