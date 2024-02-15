@@ -7,7 +7,8 @@
              x:DataType="viewmodel:WeatherInfoViewModel"
              Title="Today's weather"
              Background="{AppThemeBinding Dark={StaticResource DarkBgColor}, Light={StaticResource Primary}}"
-             Shell.BackgroundColor="{AppThemeBinding Dark={StaticResource DarkBgColor}, Light={StaticResource Primary}}">
+             Shell.BackgroundColor="{AppThemeBinding Dark={StaticResource DarkBgColor}, Light={StaticResource Primary}}"
+             Shell.TitleColor="{AppThemeBinding Dark={StaticResource DarkText}, Light={StaticResource LightText}}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="BoxView">
