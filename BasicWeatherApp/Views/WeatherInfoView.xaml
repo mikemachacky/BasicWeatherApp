@@ -188,7 +188,7 @@
                 </Grid>
                 <BoxView Grid.Row="6"
 Grid.ColumnSpan="2"></BoxView>
-                    <Grid Grid.Row="6"
+                    <Grid Grid.Row="5"
 Grid.ColumnSpan="2" Padding="20" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"></RowDefinition>
@@ -196,7 +196,7 @@ Grid.ColumnSpan="2" Padding="20" >
                         </Grid.RowDefinitions>
                         <Label Text="This week forecast" FontAttributes="Bold" FontSize="Body" />
 
-                        <ListView ItemsSource="{Binding ForecastApi}" Grid.Row="2" >
+                        <ListView ItemsSource="{Binding ForecastApi}" Grid.Row="2" VerticalScrollBarVisibility="Never" >
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Forecastday">
                                     <ViewCell>
